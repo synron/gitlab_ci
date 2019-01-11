@@ -2,6 +2,7 @@
 set -eu
 
 # APP
+# 镜像名称由jar包名获得
 TARGET=`find ./ -name *.jar`
 TARGET=${TARGET##*/}
 echo "发现Jar文件: ${TARGET}"
