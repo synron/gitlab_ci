@@ -67,8 +67,8 @@ function test(){
 function build_web(){
   git clone --recursive ${GIT_WEB_URL} web
   cd web
-  mkdir -p ../../.node_modules
-  ln -s ../../.node_modules ./node_modules
+  mkdir -p ${CI_PROJECT_DIR}/.node_modules
+  ln -s ${CI_PROJECT_DIR}/.node_modules ./node_modules
   npm install -g vue-cli
   npm install
   npm run build
