@@ -3,15 +3,15 @@ set -eu
 
 # APP
 TARGET=`find ./ -name *.jar`
+TARGET=${TARGET##*/}
 echo "发现Jar文件: ${TARGET}"
 
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
 # Aliyun 命名空间
-REGISTRY_SPACE: synron
+REGISTRY_SPACE=synron
 # Aliyun 镜像名称
-REGISTRY_NAME=${TARGET##*/}
-REGISTRY_NAME=${REGISTRY_NAME%%.*}
+REGISTRY_NAME=${TARGET%%.*}
 # echo ${REGISTRY_NAME}
 
 # 镜像全名: 用于构建/发布/拉取
