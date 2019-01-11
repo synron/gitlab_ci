@@ -26,6 +26,7 @@ REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
 REGISTRY_SPACE=synron
 # Aliyun 镜像名称
 REGISTRY_NAME=${TARGET%%.*}
+REGISTRY_NAME=${REGISTRY_NAME%%-*}
 # echo ${REGISTRY_NAME}
 
 # 镜像全名: 用于构建/发布/拉取
