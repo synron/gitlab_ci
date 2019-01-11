@@ -67,8 +67,6 @@ function test(){
 function build_web(){
   git clone --recursive ${GIT_WEB_URL} web
   cd web
-  mkdir -p ${CI_PROJECT_DIR}/.node_modules
-  ln -s ${CI_PROJECT_DIR}/.node_modules ./node_modules
   echo "npm install"
   npm install
   echo "npm run build"
