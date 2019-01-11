@@ -32,6 +32,10 @@ IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
   
 IMAGE_DEPLOY_NAME=registry.cn-shenzhen.aliyuncs.com/kluster/alpine-java
 
+function back(){
+  cd ${CI_PROJECT_DIR}
+}
+
 function clone(){
   WORK_DIR=`pwd`
   if [ ! -d "${CI_PROJECT_NAME}" ]; then
@@ -49,10 +53,15 @@ function clone(){
   cd ${CI_PROJECT_NAME}
   git submodule sync --recursive
   git submodule update --init --recursive
+  back
 }
 
 function test(){
+  rm -rf *
+  clone
+  cd ${CI_PROJECT_NAME}
   mvn test org.jacoco:jacoco-maven-plugin:prepare-agent
+  back
 }
 
 function build_web(){
@@ -72,6 +81,7 @@ function build(){
   mvn clean package -P ${PROFILE} ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
   \mv -f ${TARGET} ${CI_PROJECT_DIR}/
+  back
 }
 
 function deploy(){
