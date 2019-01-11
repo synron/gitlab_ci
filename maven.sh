@@ -10,7 +10,7 @@ set -eu
 
 M2_CACHE=/cache/.m2/
 MAVEN_OPTS=" -Dmaven.repo.local=${M2_CACHE}/repository"
-GRADLE_OPTS: "-Dgradle.user.home=/cache/.gradle"
+GRADLE_OPTS="-Dgradle.user.home=/cache/.gradle"
 MAVEN_CLI_OPTS='-B -e -U -Dmaven.test.skip=true'
 
 # APP
