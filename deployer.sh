@@ -9,9 +9,9 @@ set -eu
 
 
 M2_CACHE=/cache/.m2/
-MAVEN_OPTS=" -Dmaven.repo.local=${M2_CACHE}/repository"
+MAVEN_OPTS="-Dmaven.repo.local=${M2_CACHE}/repository"
+MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true ${MAVEN_OPTS}"
 GRADLE_OPTS="-Dgradle.user.home=/cache/.gradle"
-MAVEN_CLI_OPTS='-B -e -U -Dmaven.test.skip=true'
 
 # APP
 # 镜像名称由jar包名获得
