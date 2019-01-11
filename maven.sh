@@ -55,10 +55,20 @@ function test(){
   mvn test org.jacoco:jacoco-maven-plugin:prepare-agent
 }
 
+function build_web(){
+  git clone --recursive ${GIT_WEB_URL} web
+  cd web
+  npm install -g
+  npm run build
+  \cp -rf ./dist/* ../app/src/main/resources-public/static/
+  cd ..
+}
+
 function build(){
   rm -rf *
-  gitlab_ci clone
+  clone
   cd ${CI_PROJECT_NAME}
+  build_web
   mvn clean package -P ${PROFILE} ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
   \mv -f ${TARGET} ${CI_PROJECT_DIR}/
