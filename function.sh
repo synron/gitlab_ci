@@ -10,8 +10,8 @@ REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
 # Aliyun 命名空间
 REGISTRY_SPACE: synron
 # Aliyun 镜像名称
-REGISTRY_NAME=${TARGET%%.*}
 REGISTRY_NAME=${TARGET##*/}
+REGISTRY_NAME=${REGISTRY_NAME%%.*}
 # echo ${REGISTRY_NAME}
 
 # 镜像全名: 用于构建/发布/拉取
@@ -52,7 +52,7 @@ function deploy(){
   echo "" > Dockerfile
   echo "FROM ${IMAGE_DEPLOY_NAME}" >> Dockerfile
   echo "WORKDIR /opt" >> Dockerfile
-  echo "ADD app.jar app.jar" >> Dockerfile
+  echo "ADD ${TARGET} app.jar" >> Dockerfile
   echo "ENTRYPOINT [\"java\", \"-jar\", \"app.jar\", \"--server.port=80\"]" >> Dockerfile
   echo "" >> Dockerfile
   cat Dockerfile
