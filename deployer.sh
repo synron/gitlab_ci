@@ -22,6 +22,7 @@ echo "发现Jar文件: ${TARGET}"
 
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
+REGISTRY_URL_INTERNAL=registry-internal.cn-shenzhen.aliyuncs.com
 # Aliyun 命名空间
 REGISTRY_SPACE=synron
 # Aliyun 镜像名称
@@ -87,6 +88,14 @@ function build(){
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
   \mv -f ${TARGET} ${CI_PROJECT_DIR}/
   back
+}
+function getHubUrl(){
+  PING=`ping 10.0.0.160 -c 1 | grep "time=" | grep "ttl="`
+  if [ ! -n "$PING" ] ;then
+    echo ${REGISTRY_URL} 
+  else
+    echo ${REGISTRY_URL_INTERNAL}
+  fi
 }
 
 function deploy(){
