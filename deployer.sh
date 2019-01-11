@@ -21,19 +21,14 @@ TARGET=${TARGET##*/}
 echo "发现Jar文件: ${TARGET}"
 
 # Aliyun 容器镜像仓库地址
-REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
-REGISTRY_URL_INTERNAL=registry-vpc.cn-shenzhen.aliyuncs.com
+REGISTRY_URL_WAN=registry.cn-shenzhen.aliyuncs.com
+REGISTRY_URL_LAN=registry-vpc.cn-shenzhen.aliyuncs.com
 # Aliyun 命名空间
 REGISTRY_SPACE=synron
 # Aliyun 镜像名称
 REGISTRY_NAME=${TARGET%%.*}
 REGISTRY_NAME=${REGISTRY_NAME%%-*}
 # echo ${REGISTRY_NAME}
-
-# 镜像全名: 用于构建/发布/拉取
-IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
-  
-IMAGE_DEPLOY_NAME=registry.cn-shenzhen.aliyuncs.com/kluster/alpine-java
 
 function back(){
   cd ${CI_PROJECT_DIR}
@@ -92,14 +87,21 @@ function build(){
 function getHubUrl(){
   PING=`ping 10.0.0.160 -c 1 | grep "time=" | grep "ttl="`
   if [ ! -n "$PING" ] ;then
-    echo ${REGISTRY_URL} 
+    echo ${REGISTRY_URL_WAN} 
   else
-    echo ${REGISTRY_URL_INTERNAL}
+    echo ${REGISTRY_URL_LAN}
   fi
 }
 
 function deploy(){
   echo "----- 发布到 Aliyun 容器镜像服务 -----"
+
+  REGISTRY_URL=`getHubUrl`
+  echo ${REGISTRY_URL}
+  
+  # 镜像全名: 用于构建/发布/拉取
+  IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
+  IMAGE_DEPLOY_NAME=${REGISTRY_URL}/kluster/alpine-java
 
   cd ${CI_PROJECT_DIR}
   local WORKDIR=.docker
@@ -113,10 +115,9 @@ function deploy(){
   echo "" >> Dockerfile
   cat Dockerfile
   
-  REGISTRY_URL=`getHubUrl`
   
   docker images
-  echo y | docker system prune
+  # echo y | docker system prune
   docker login -u${REGISTRY_USERNAME} -p${REGISTRY_PASSWORD} ${REGISTRY_URL}
   docker build -t ${IMAGE_NAME} --compress .
   docker images
