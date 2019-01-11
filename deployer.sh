@@ -93,7 +93,7 @@ function deploy(){
 
   cd ${CI_PROJECT_DIR}
   local WORKDIR=.docker
-  mkdir -p ${WORKDIR} && \mv -f app.jar ${WORKDIR}/ && cd ${WORKDIR}
+  mkdir -p ${WORKDIR} && \mv -f ${TARGET} ${WORKDIR}/ && cd ${WORKDIR}
 
   echo "" > Dockerfile
   echo "FROM ${IMAGE_DEPLOY_NAME}" >> Dockerfile
