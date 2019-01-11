@@ -67,7 +67,7 @@ function test(){
 function build_web(){
   git clone --recursive ${GIT_WEB_URL} web
   cd web
-  npm install -g vue-cli 
+  npm install -g vue-cli vue-cli-service
   npm install -g
   npm run build
   \cp -rf ./dist/* ../app/src/main/resources-public/static/
