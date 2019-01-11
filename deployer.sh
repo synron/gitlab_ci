@@ -112,7 +112,9 @@ function deploy(){
   echo "ENTRYPOINT [\"java\", \"-jar\", \"app.jar\", \"--server.port=80\"]" >> Dockerfile
   echo "" >> Dockerfile
   cat Dockerfile
-
+  
+  REGISTRY_URL=`getHubUrl`
+  
   docker images
   echo y | docker system prune
   docker login -u${REGISTRY_USERNAME} -p${REGISTRY_PASSWORD} ${REGISTRY_URL}
