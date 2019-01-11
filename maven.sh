@@ -1,6 +1,18 @@
 #!/bin/sh
 set -eu
 
+
+# 配置gitlab-runner缓存
+# 持久化:
+# vim /opt/data/gitlab-runner/config/config.toml
+# volumes = ["/opt/data/gitlab-runner/cache:/cache:rw"]
+
+
+M2_CACHE=/cache/.m2/
+MAVEN_OPTS=" -Dmaven.repo.local=${M2_CACHE}/repository"
+GRADLE_OPTS: "-Dgradle.user.home=/cache/.gradle"
+MAVEN_CLI_OPTS='-B -e -U -Dmaven.test.skip=true'
+
 # APP
 # 镜像名称由jar包名获得
 TARGET=`find ./ -name *.jar`
@@ -20,12 +32,8 @@ IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
   
 IMAGE_DEPLOY_NAME=registry.cn-shenzhen.aliyuncs.com/kluster/alpine-java
 
-
 function clone(){
   WORK_DIR=`pwd`
-  echo ${CI_PROJECT_URL}
-  echo ${CI_PROJECT_DIR}
-  echo ${CI_PROJECT_NAME}:${CI_COMMIT_REF_NAME}
   if [ ! -d "${CI_PROJECT_NAME}" ]; then
     echo "--------- 初始化 git -----------"
     echo https://${GIT_USERNAME}:${GIT_PASSWORD}@gitlab.synron.cn > ~/.git-credentials
@@ -41,6 +49,19 @@ function clone(){
   cd ${CI_PROJECT_NAME}
   git submodule sync --recursive
   git submodule update --init --recursive
+}
+
+function test(){
+  mvn test org.jacoco:jacoco-maven-plugin:prepare-agent
+}
+
+function build(){
+  rm -rf *
+  gitlab_ci clone
+  cd ${CI_PROJECT_NAME}
+  mvn clean package -P ${PROFILE} ${MAVEN_CLI_OPTS}
+  TARGET=`find ./ -name *-${PROFILE}-*.jar`
+  \mv -f ${TARGET} ${CI_PROJECT_DIR}/
 }
 
 function deploy(){
