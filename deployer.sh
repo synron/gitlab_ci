@@ -8,10 +8,11 @@ set -eu
 # volumes = ["/opt/data/gitlab-runner/cache:/cache:rw"]
 
 
-M2_CACHE=/cache/.m2/
-MAVEN_OPTS="-Dmaven.repo.local=${M2_CACHE}/repository"
-MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true ${MAVEN_OPTS}"
-GRADLE_OPTS="-Dgradle.user.home=/cache/.gradle"
+export M2_CACHE=/cache/.m2/
+export MAVEN_OPTS="-Dmaven.repo.local=${M2_CACHE}/repository"
+export GRADLE_OPTS="-Dgradle.user.home=${M2_CACHE}/.gradle"
+
+MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true"
 
 # APP
 # 镜像名称由jar包名获得
