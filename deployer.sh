@@ -22,7 +22,7 @@ echo "发现Jar文件: ${TARGET}"
 
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
-REGISTRY_URL_INTERNAL=registry-internal.cn-shenzhen.aliyuncs.com
+REGISTRY_URL_INTERNAL=registry-vpc.cn-shenzhen.aliyuncs.com
 # Aliyun 命名空间
 REGISTRY_SPACE=synron
 # Aliyun 镜像名称
