@@ -69,9 +69,12 @@ function build_web(){
   cd web
   mkdir -p ${CI_PROJECT_DIR}/.node_modules
   ln -s ${CI_PROJECT_DIR}/.node_modules ./node_modules
+  echo "npm install"
   npm install -g vue-cli
   npm install
+  echo "npm run build"
   npm run build
+  echo "cp dist"
   \cp -rf ./dist/* ../app/src/main/resources-public/static/
   cd ..
 }
