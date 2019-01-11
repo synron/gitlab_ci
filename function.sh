@@ -1,14 +1,24 @@
 #!/bin/sh
 set -eu
 
+# APP
+TARGET=`find ./ -name *.jar`
+echo "发现Jar文件: ${TARGET}"
 
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL=registry.cn-shenzhen.aliyuncs.com
+# Aliyun 命名空间
+REGISTRY_SPACE: kluster
+# Aliyun 镜像名称
+REGISTRY_NAME=${TARGET%%.*}
+REGISTRY_NAME=${TARGET##*/}
+# echo ${REGISTRY_NAME}
 
 # 镜像全名: 用于构建/发布/拉取
 IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
   
 IMAGE_DEPLOY_NAME=registry.cn-shenzhen.aliyuncs.com/kluster/alpine-java
+
 
 function clone(){
   WORK_DIR=`pwd`
