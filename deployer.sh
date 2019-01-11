@@ -70,7 +70,6 @@ function build_web(){
   mkdir -p ${CI_PROJECT_DIR}/.node_modules
   ln -s ${CI_PROJECT_DIR}/.node_modules ./node_modules
   echo "npm install"
-  npm install -g vue-cli
   npm install
   echo "npm run build"
   npm run build
