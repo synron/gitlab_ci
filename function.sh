@@ -59,5 +59,5 @@ function deploy(){
 
 for arg in $@
 do
-  eval $arg
+  eval "$arg"
 done
