@@ -111,7 +111,7 @@ function getImageName(){
   # 镜像名称由jar包名获得
   TARGET=`find ./ -name *.jar`
   TARGET=${TARGET##*/}
-  if [ -n "$PACKAGE_NAME" ]; then 
+  if [ -n "$TARGET" ]; then 
     echo "发现目标Jar文件: ${TARGET}"
   fi
 
