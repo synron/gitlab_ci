@@ -109,14 +109,15 @@ function getHubUrl(){
 function getImageName(){
   # APP
   # 镜像名称由jar包名获得
-  TARGET=`find ./ -name *.jar`
-  TARGET=${TARGET##*/}
-  if [ -n "$TARGET" ]; then 
-    echo "发现目标Jar文件: ${TARGET}"
+  
+  JAR=$1
+  JAR=${JAR##*/}
+  if [ -n "$JAR" ]; then 
+    echo "发现目标Jar文件: ${JAR}"
   fi
 
   # Aliyun 镜像名称
-  REGISTRY_NAME=${TARGET%%.*}
+  REGISTRY_NAME=${JAR%%.*}
   #REGISTRY_NAME=${REGISTRY_NAME%%-*}
   echo ${REGISTRY_NAME}
 }
@@ -124,8 +125,9 @@ function getImageName(){
 function deploy(){
   echo "----- 发布到 Aliyun 容器镜像服务 -----"
   
+  TARGET=`find ./ -name *.jar`
   REGISTRY_URL=`getHubUrl`
-  REGISTRY_NAME=`getImageName`
+  REGISTRY_NAME=`getImageName ${TARGET}`
   
   # 镜像全名: 用于构建/发布/拉取
   IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
