@@ -63,14 +63,7 @@ function test(){
 }
 
 function build_web(){
-  git clone --recursive ${GIT_WEB_URL} web
-  cd web
-  echo "npm install"
-  npm install
-  echo "npm run build"
-  npm run build
-  echo "cp dist"
-  
+
   local APP_DIR;
   local APP_NAME;
   local DIRS=`ls -F | grep '/$'`
@@ -90,6 +83,15 @@ function build_web(){
     fi
   done
   echo "发现APP目录: ${APP_DIR}"
+  
+  git clone --recursive ${GIT_WEB_URL} web
+  cd web
+  echo "npm install"
+  npm install
+  echo "npm run build"
+  npm run build
+  echo "cp dist"
+  
   \cp -rf ./dist/* ../${APP_DIR}/src/main/resources-public/static/
   cd ..
 }
