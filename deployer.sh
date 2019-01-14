@@ -83,6 +83,7 @@ function build_web(){
     fi
   done
   echo "发现APP目录: ${APP_DIR}"
+  echo "发现APP名称: ${APP_NAME}"
   
   git clone --recursive ${GIT_WEB_URL} web
   cd web
