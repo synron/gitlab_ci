@@ -18,7 +18,9 @@ MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true"
 # 镜像名称由jar包名获得
 TARGET=`find ./ -name *.jar`
 TARGET=${TARGET##*/}
-echo "发现Jar文件: ${TARGET}"
+if [ -n "$PACKAGE_NAME" ]; then 
+  echo "发现目标Jar文件: ${TARGET}"
+fi
 
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL_WAN=registry.cn-shenzhen.aliyuncs.com
