@@ -14,23 +14,11 @@ export GRADLE_OPTS="-Dgradle.user.home=${M2_CACHE}/.gradle"
 
 MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true"
 
-# APP
-# 镜像名称由jar包名获得
-TARGET=`find ./ -name *.jar`
-TARGET=${TARGET##*/}
-if [ -n "$PACKAGE_NAME" ]; then 
-  echo "发现目标Jar文件: ${TARGET}"
-fi
-
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL_WAN=registry.cn-shenzhen.aliyuncs.com
 REGISTRY_URL_LAN=registry-vpc.cn-shenzhen.aliyuncs.com
 # Aliyun 命名空间
 REGISTRY_SPACE=synron
-# Aliyun 镜像名称
-REGISTRY_NAME=${TARGET%%.*}
-REGISTRY_NAME=${REGISTRY_NAME%%-*}
-# echo ${REGISTRY_NAME}
 
 function back(){
   cd ${CI_PROJECT_DIR}
@@ -66,9 +54,9 @@ function test(){
 
 function build_web(){
 
-  local APP_DIR;
-  local APP_NAME;
-  local DIRS=`ls -F | grep '/$'`
+  APP_DIR;
+  APP_NAME;
+  DIRS=`ls -F | grep '/$'`
   for arg in ${DIRS[@]}
   do
     arg=${arg%%/*};
@@ -106,9 +94,11 @@ function build(){
   build_web
   mvn clean package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
-  \mv -f ${TARGET} ${CI_PROJECT_DIR}/
+  echo "打包完成:${TARGET}"
+  \mv -f ${TARGET} ${CI_PROJECT_DIR}/${APP_NAME}.jar
   back
 }
+
 function getHubUrl(){
   PING=`ping 10.0.0.160 -c 1 | grep "time=" | grep "ttl="`
   if [ ! -n "$PING" ] ;then
@@ -118,16 +108,33 @@ function getHubUrl(){
   fi
 }
 
+function getImageName(){
+  # APP
+  # 镜像名称由jar包名获得
+  TARGET=`find ./ -name *.jar`
+  TARGET=${TARGET##*/}
+  if [ -n "$PACKAGE_NAME" ]; then 
+    echo "发现目标Jar文件: ${TARGET}"
+  fi
+
+  # Aliyun 镜像名称
+  REGISTRY_NAME=${TARGET%%.*}
+  #REGISTRY_NAME=${REGISTRY_NAME%%-*}
+  echo ${REGISTRY_NAME}
+}
+
 function deploy(){
   echo "----- 发布到 Aliyun 容器镜像服务 -----"
-
+  
   REGISTRY_URL=`getHubUrl`
-  echo ${REGISTRY_URL}
+  REGISTRY_NAME=`getImageName`
   
   # 镜像全名: 用于构建/发布/拉取
   IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
   IMAGE_DEPLOY_NAME=${REGISTRY_URL}/kluster/alpine-java
 
+  echo "镜像名称${IMAGE_NAME}"
+  
   cd ${CI_PROJECT_DIR}
   local WORKDIR=.docker
   mkdir -p ${WORKDIR} && \mv -f ${TARGET} ${WORKDIR}/ && cd ${WORKDIR}
