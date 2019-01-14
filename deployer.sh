@@ -102,7 +102,7 @@ function build(){
   clone
   cd ${CI_PROJECT_NAME}
   build_web
-  mvn clean package -P ${PROFILE} ${MAVEN_CLI_OPTS}
+  mvn clean package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
   \mv -f ${TARGET} ${CI_PROJECT_DIR}/
   back
