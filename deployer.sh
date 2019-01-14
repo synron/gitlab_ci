@@ -112,10 +112,6 @@ function getImageName(){
   
   JAR=$1
   JAR=${JAR##*/}
-  if [ -n "$JAR" ]; then 
-    echo "发现目标Jar文件: ${JAR}"
-  fi
-
   # Aliyun 镜像名称
   REGISTRY_NAME=${JAR%%.*}
   #REGISTRY_NAME=${REGISTRY_NAME%%-*}
@@ -126,6 +122,9 @@ function deploy(){
   echo "----- 发布到 Aliyun 容器镜像服务 -----"
   
   TARGET=`find ./ -name *.jar`
+  if [ -n "$TARGET" ]; then 
+    echo "发现目标Jar文件: ${TARGET}"
+  fi
   REGISTRY_URL=`getHubUrl`
   REGISTRY_NAME=`getImageName ${TARGET}`
   
