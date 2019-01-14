@@ -80,7 +80,6 @@ function build_web(){
     echo "---${arg}"
     if [[ ! $arg =~ "library" ]]; then
         POM=$arg/pom.xml
-        POM=pom.xml
         if [ -f "$POM" ];then
           PACKAGE_NAME=`awk '/<package.name>[^<]+<\/package.name>/{gsub(/<package.name>|<\/package.name>/,"",$1);print $1;exit;}' $POM`
           if [ -n "$PACKAGE_NAME" ]; then 
