@@ -54,8 +54,6 @@ function test(){
 
 function build_web(){
 
-  APP_DIR;
-  APP_NAME;
   DIRS=`ls -F | grep '/$'`
   for arg in ${DIRS[@]}
   do
