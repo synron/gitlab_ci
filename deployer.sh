@@ -70,7 +70,28 @@ function build_web(){
   echo "npm run build"
   npm run build
   echo "cp dist"
-  \cp -rf ./dist/* ../app/src/main/resources-public/static/
+  
+  local APP_DIR;
+  local APP_NAME;
+  local DIRS=`ls -F | grep '/$'`
+  for arg in ${DIRS[@]}
+  do
+    arg=${arg%%/*};
+    echo "---${arg}"
+    if [[ ! $arg =~ "library" ]]; then
+        POM=$arg/pom.xml
+        POM=pom.xml
+        if [ -f "$POM" ];then
+          PACKAGE_NAME=`awk '/<package.name>[^<]+<\/package.name>/{gsub(/<package.name>|<\/package.name>/,"",$1);print $1;exit;}' $POM`
+          if [ -n "$PACKAGE_NAME" ]; then 
+            APP_NAME=`awk '/<artifactId>[^<]+<\/artifactId>/{gsub(/<artifactId>|<\/artifactId>/,"",$1);print $1;exit;}' $POM`
+            APP_DIR=$arg;
+          fi
+        fi
+    fi
+  done
+  echo "发现APP目录: ${APP_DIR}"
+  \cp -rf ./dist/* ../${APP_DIR}/src/main/resources-public/static/
   cd ..
 }
 
