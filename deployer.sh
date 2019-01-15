@@ -39,8 +39,8 @@ function clone(){
   fi
 
   cd ${CI_PROJECT_NAME}
-  git submodule sync --recursive
-  git submodule update --init --recursive
+#   git submodule sync --recursive
+#   git submodule update --init --recursive
   back
 }
 
