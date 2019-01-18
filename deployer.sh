@@ -12,7 +12,8 @@ export M2_CACHE=/cache/.m2/
 export MAVEN_OPTS="-Dmaven.repo.local=${M2_CACHE}/repository"
 export GRADLE_OPTS="-Dgradle.user.home=${M2_CACHE}/.gradle"
 
-MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true"
+MAVEN_CLI_OPTS="-B -e -U"
+# MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true"
 
 # Aliyun 容器镜像仓库地址
 REGISTRY_URL_WAN=registry.cn-shenzhen.aliyuncs.com
