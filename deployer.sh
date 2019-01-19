@@ -89,8 +89,8 @@ function build(){
   rm -rf *
   clone
   cd ${CI_PROJECT_NAME}
-  mvn clean test
   build_web
+  mvn clean test
   mvn package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
   echo "打包完成:${TARGET}"
