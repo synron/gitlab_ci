@@ -54,7 +54,7 @@ function clone(){
 function test(){
   clone
   cd ${CI_PROJECT_NAME}
-  mvn test org.jacoco:jacoco-maven-plugin:prepare-agent
+  mvn test sonar:sonar
   back
 }
 
