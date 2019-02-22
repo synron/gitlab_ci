@@ -10,7 +10,7 @@ set -eu
 
 export M2_CACHE=/cache/.m2/
 export MAVEN_OPTS="-Dmaven.repo.local=${M2_CACHE}/repository"
-export GRADLE_OPTS="-Dgradle.user.home=${M2_CACHE}/.gradle"
+export GRADLE_OPTS="-Dgradle.user.home=${M2_CACHE}../.gradle"
 
 MAVEN_CLI_OPTS="-B -e -U -Dmaven.test.skip=true"
 
@@ -30,8 +30,9 @@ function clean(){
 }
  
 function clone(){
+  back
   WORK_DIR=`pwd`
-  if [ ! -d "${CI_PROJECT_NAME}/pom.xml" ]; then
+  if [ ! -f "${CI_PROJECT_NAME}/pom.xml" ]; then
     \rm -rf ${CI_PROJECT_NAME}
     echo "--------- 初始化 git -----------"
     echo https://${GIT_USERNAME}:${GIT_PASSWORD}@gitlab.synron.cn > ~/.git-credentials
