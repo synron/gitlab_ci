@@ -31,7 +31,8 @@ function clean(){
  
 function clone(){
   WORK_DIR=`pwd`
-  if [ ! -d "${CI_PROJECT_NAME}" ]; then
+  if [ ! -d "${CI_PROJECT_NAME}/pom.xml" ]; then
+    \rm -rf ${CI_PROJECT_NAME}
     echo "--------- 初始化 git -----------"
     echo https://${GIT_USERNAME}:${GIT_PASSWORD}@gitlab.synron.cn > ~/.git-credentials
     git config --global user.name ${GIT_USERNAME}
