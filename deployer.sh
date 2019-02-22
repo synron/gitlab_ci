@@ -24,6 +24,11 @@ function back(){
   cd ${CI_PROJECT_DIR}
 }
 
+function clean(){
+  cd ${CI_PROJECT_DIR}
+  rm -rf *
+}
+ 
 function clone(){
   WORK_DIR=`pwd`
   if [ ! -d "${CI_PROJECT_NAME}" ]; then
@@ -38,14 +43,13 @@ function clone(){
     echo "--------- 源码已存在 -----------"
   fi
 
-  cd ${CI_PROJECT_NAME}
+#  cd ${CI_PROJECT_NAME}
 #   git submodule sync --recursive
 #   git submodule update --init --recursive
   back
 }
 
 function test(){
-  rm -rf *
   clone
   cd ${CI_PROJECT_NAME}
   mvn test org.jacoco:jacoco-maven-plugin:prepare-agent
@@ -86,7 +90,6 @@ function build_web(){
 }
 
 function build(){
-  rm -rf *
   clone
   cd ${CI_PROJECT_NAME}
   build_web
