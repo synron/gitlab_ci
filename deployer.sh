@@ -90,7 +90,7 @@ function build(){
   clone
   cd ${CI_PROJECT_NAME}
   build_web
-  mvn clean test
+  mvn clean $*
   mvn package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name *-${PROFILE}-*.jar`
   echo "打包完成:${TARGET}"
@@ -158,7 +158,8 @@ function deploy(){
 
 }
 
-for arg in $@
-do
-  eval "$arg"
-done
+# for arg in $@
+# do
+#   eval "$arg"
+# done
+eval "$*"
