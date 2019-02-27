@@ -54,7 +54,7 @@ function clone(){
 function test(){
   clone
   cd ${CI_PROJECT_NAME}
-  mvn test sonar:sonar
+  mvn clean test sonar:sonar
   back
 }
 
