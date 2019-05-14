@@ -97,7 +97,7 @@ function build(){
   build_web
   mvn clean $*
   mvn package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
-  TARGET=`find ./ -name *-${PROFILE}-*.jar | grep -v "\${timestamp}"`
+  TARGET=`find ./ -name "*-${PROFILE}-*.jar" | grep -v "\\${timestamp}"`
   echo "打包完成:${TARGET}"
   \mv -f ${TARGET} ${CI_PROJECT_DIR}/${APP_NAME}.jar
   back
