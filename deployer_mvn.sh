@@ -74,9 +74,7 @@ function prepare(){
   done
   
   if [ ! -f "$POM" ];then
-    if [[ $arg =~ "src" ]]; then
-        POM=pom.xml
-    fi
+      POM=./pom.xml
   fi
     
   if [ -f "$POM" ];then
