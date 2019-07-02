@@ -94,9 +94,7 @@ function build_web(){
 function build(){
   clone
   cd ${CI_PROJECT_NAME}
-  if [ ! -n "${GIT_WEB_URL}" ]; then
-    echo "not found variable: GIT_WEB_URL"
-  else
+  if [ -n "$GIT_WEB_URL" ]; then
     build_web
   fi
   mvn clean $*
