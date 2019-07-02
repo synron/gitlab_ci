@@ -94,7 +94,11 @@ function build_web(){
 function build(){
   clone
   cd ${CI_PROJECT_NAME}
-  build_web
+  if [ ${GIT_WEB_URL} ]; then 
+    build_web
+  else 
+    echo "not found variable: GIT_WEB_URL" 
+  fi
   mvn clean $*
   mvn package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name "*-${PROFILE}-*.jar" | grep -v "\\${timestamp}"`
