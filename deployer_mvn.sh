@@ -82,11 +82,14 @@ function prepare(){
   fi
     
   if [ -f "$POM" ];then
-    PACKAGE_NAME=`awk '/<package.name>[^<]+<\/package.name>/{gsub(/<package.name>|<\/package.name>/,"",$1);print $1;exit;}' $POM`
-    if [ -n "$PACKAGE_NAME" ]; then 
-      APP_NAME=`awk '/<artifactId>[^<]+<\/artifactId>/{gsub(/<artifactId>|<\/artifactId>/,"",$1);print $1;exit;}' $POM`
-      APP_DIR=$arg;
-    fi
+      PACKAGE_NAME=`awk '/<package.name>[^<]+<\/package.name>/{gsub(/<package.name>|<\/package.name>/,"",$1);print $1;exit;}' $POM`
+      if [ -n "$PACKAGE_NAME" ]; then 
+          echo "发现 package.name, 查找artifactId"
+        APP_NAME=`awk '/<artifactId>[^<]+<\/artifactId>/{gsub(/<artifactId>|<\/artifactId>/,"",$1);print $1;exit;}' $POM`
+        APP_DIR=$arg;
+      else 
+          echo "没有发现 package.name"
+      fi
   fi
     
   echo "发现APP目录: ${APP_DIR}"
