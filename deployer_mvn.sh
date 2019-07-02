@@ -75,10 +75,10 @@ function prepare(){
   done
   
   if [ ! -f "$POM" ];then
-      echo "使用根目录POM"
+      echo "使用根目录POM:${POM}"
       POM=pom.xml
   else
-      echo "使用子目录POM"
+      echo "使用子目录POM:${POM}"
   fi
     
   if [ -f "$POM" ];then
