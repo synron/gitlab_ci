@@ -64,17 +64,28 @@ function prepare(){
   do
     arg=${arg%%/*};
     echo "---${arg}"
-    if [[ ! $arg =~ "library" ]]; then
-        POM=$arg/pom.xml
-        if [ -f "$POM" ];then
-          PACKAGE_NAME=`awk '/<package.name>[^<]+<\/package.name>/{gsub(/<package.name>|<\/package.name>/,"",$1);print $1;exit;}' $POM`
-          if [ -n "$PACKAGE_NAME" ]; then 
-            APP_NAME=`awk '/<artifactId>[^<]+<\/artifactId>/{gsub(/<artifactId>|<\/artifactId>/,"",$1);print $1;exit;}' $POM`
-            APP_DIR=$arg;
-          fi
-        fi
+    
+    if [ ! -f "$POM" ];then
+      if [[ ! $arg =~ "library" ]]; then
+          POM=$arg/pom.xml
+      fi
     fi
   done
+  
+  if [ ! -f "$POM" ];then
+    if [[ $arg =~ "src" ]]; then
+        POM=pom.xml
+    fi
+  fi
+    
+  if [ -f "$POM" ];then
+    PACKAGE_NAME=`awk '/<package.name>[^<]+<\/package.name>/{gsub(/<package.name>|<\/package.name>/,"",$1);print $1;exit;}' $POM`
+    if [ -n "$PACKAGE_NAME" ]; then 
+      APP_NAME=`awk '/<artifactId>[^<]+<\/artifactId>/{gsub(/<artifactId>|<\/artifactId>/,"",$1);print $1;exit;}' $POM`
+      APP_DIR=$arg;
+    fi
+  fi
+    
   echo "发现APP目录: ${APP_DIR}"
   echo "发现APP名称: ${APP_NAME}"
 }
