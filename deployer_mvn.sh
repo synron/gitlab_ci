@@ -68,15 +68,17 @@ function prepare(){
     
     if [ ! -f "$POM" ];then
       if [[ ! $arg =~ "library" ]]; then
+        if [ -f "$arg/pom.xml" ];then
           echo "发现 POM"
           POM=$arg/pom.xml
+        fi
       fi
     fi
   done
   
   if [ ! -f "$POM" ];then
-      echo "使用根目录POM:${POM}"
       POM=pom.xml
+      echo "使用根目录POM:${POM}"
   else
       echo "使用子目录POM:${POM}"
   fi
