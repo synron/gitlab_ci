@@ -58,8 +58,7 @@ function test(){
   back
 }
 
-function build_web(){
-
+function prepare(){
   DIRS=`ls -F | grep '/$'`
   for arg in ${DIRS[@]}
   do
@@ -78,7 +77,10 @@ function build_web(){
   done
   echo "发现APP目录: ${APP_DIR}"
   echo "发现APP名称: ${APP_NAME}"
-  
+}
+
+function build_web(){
+ 
   git clone --recursive ${GIT_WEB_URL} web
   cd web
   echo "npm install"
@@ -94,9 +96,13 @@ function build_web(){
 function build(){
   clone
   cd ${CI_PROJECT_NAME}
+  # 准备环境变量
+  prepare
+  # 构建前端
   if [ -n "$GIT_WEB_URL" ]; then 
     build_web
   fi
+  # 构建后端
   mvn clean $*
   mvn package -P ${PROFILE} -D package.type=jar -D web.server=undertow ${MAVEN_CLI_OPTS}
   TARGET=`find ./ -name "*-${PROFILE}-*.jar" | grep -v "\\${timestamp}"`
