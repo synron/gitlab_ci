@@ -60,6 +60,7 @@ function test(){
 
 function prepare(){
   DIRS=`ls -F | grep '/$'`
+  POM=""
   for arg in ${DIRS[@]}
   do
     arg=${arg%%/*};
