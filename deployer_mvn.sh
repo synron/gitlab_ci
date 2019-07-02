@@ -60,13 +60,13 @@ function test(){
 
 function prepare(){
   DIRS=`ls -F | grep '/$'`
-  POM=
+  POM=null
   for arg in ${DIRS[@]}
   do
     arg=${arg%%/*};
     echo "---${arg}"
     
-    if [ ! -n "$POM" ];then
+    if [ ! -f "$POM" ];then
       if [[ ! $arg =~ "library" ]]; then
           echo "发现 POM"
           POM=$arg/pom.xml
@@ -74,7 +74,7 @@ function prepare(){
     fi
   done
   
-  if [ ! -n "$POM" ];then
+  if [ ! -f "$POM" ];then
       echo "使用根目录POM"
       POM=pom.xml
   else
