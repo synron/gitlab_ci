@@ -67,7 +67,7 @@ function prepare(){
     echo "---${arg}"
     
     if [ ! -f "$POM" ];then
-      if [ ! $(echo $arg | grep "library") != "" ]; then
+      if [ ! $arg =~ "library" ]; then
         if [ -f "$arg/pom.xml" ];then
           echo "发现 POM"
           POM=$arg/pom.xml
