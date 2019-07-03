@@ -89,7 +89,7 @@ function prepare(){
       if [ -n "$PACKAGE_NAME" ]; then 
           echo "发现 package.name, 查找artifactId"
         APP_NAME=`awk '/<artifactId>[^<]+<\/artifactId>/{gsub(/<artifactId>|<\/artifactId>/,"",$1);print $1;exit;}' $POM`
-        APP_DIR=$(dirname $(POM));
+        APP_DIR=$(dirname $POM);
       else 
           echo "没有发现 package.name"
       fi
