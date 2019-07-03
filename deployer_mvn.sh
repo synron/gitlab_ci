@@ -103,6 +103,9 @@ function build_web(){
  
   git clone --recursive ${GIT_WEB_URL} web
   cd web
+  echo "查看分支"
+  git symbolic-ref --short -q HEAD
+  
   echo "npm install"
   npm install
   echo "npm run build"
