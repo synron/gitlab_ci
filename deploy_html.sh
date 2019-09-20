@@ -21,7 +21,6 @@ function deploy(){
   echo "----- 发布到 Aliyun 容器镜像服务 -----"
   
   REGISTRY_URL=`getHubUrl`
-  REGISTRY_NAME=synrongroup
   
   # 镜像全名: 用于构建/发布/拉取
   IMAGE_NAME=${REGISTRY_URL}/${REGISTRY_SPACE}/${REGISTRY_NAME}:latest
@@ -32,7 +31,7 @@ function deploy(){
   echo "" > Dockerfile
   echo "FROM ${IMAGE_DEPLOY_NAME}" >> Dockerfile
   echo "WORKDIR /usr/share/nginx/html/" >> Dockerfile
-  echo "ADD ./ /usr/share/nginx/html/" >> Dockerfile
+  echo "ADD ./${HTML} /usr/share/nginx/html/" >> Dockerfile
   echo "" >> Dockerfile
   cat Dockerfile
   
